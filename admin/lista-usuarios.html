@@ -48,6 +48,34 @@
         .header h1 {
             font-size: 1.5rem;
         }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .btn-home {
+            background: none;
+            border: 2px solid white; /* contorno branco */
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 42px;
+            height: 42px;
+            border-radius: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-home:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-color: #fff;
+        }
         
         .btn {
             padding: 8px 15px;
@@ -163,8 +191,14 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Lista de Usuários</h1>
-            <button class="btn btn-primary" onclick="goBack()"> Lista de Demandas</button>
+            <div class="header-content">
+                <button class="btn-home" onclick="goBack()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                    </svg>
+                </button>
+                <h1>Lista de Usuários</h1>
+            </div>
         </div>
         
         <div class="user-profile" onclick="window.location.href='usuario.html'">

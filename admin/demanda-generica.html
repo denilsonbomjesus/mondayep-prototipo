@@ -47,6 +47,34 @@
         .header h1 {
             font-size: 1.5rem;
         }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .btn-back {
+            background: none;
+            border: 2px solid white; /* contorno branco */
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 42px;
+            height: 42px;
+            border-radius: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-back:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-color: #fff;
+        }
         
         .btn {
             padding: 8px 15px;
@@ -260,8 +288,14 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Informações da Demanda</h1>
-            <button class="btn btn-primary" onclick="goBack()">Voltar para Lista</button>
+            <div class="header-content">
+                <button class="btn-back" onclick="goBack()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H19v-2z"/>
+                    </svg>
+                </button>
+                <h1>Informações da Demanda</h1>
+            </div>
         </div>
         
         <div class="demanda-info">
