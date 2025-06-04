@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitar Acesso - Gerenciador de Demandas</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+        }
+        
+        .access-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 0 20px;
+        }
+        
+        .access-card {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .access-header {
+            margin-bottom: 30px;
+        }
+        
+        .access-header h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .access-header p {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--secondary-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+        
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .access-footer {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+        
+        .access-footer a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+        
+        .access-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="access-container">
+        <div class="access-card">
+            <div class="access-header">
+                <h1>Solicitar Acesso</h1>
+                <p>Preencha o formulário para solicitar acesso ao sistema</p>
+            </div>
+            
+            <form>
+                <div class="form-row">
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="full-name">Nome Completo</label>
+                            <input type="text" id="full-name" placeholder="Seu nome completo">
+                        </div>
+                    </div>
+                    <div class="form-col">
+                        <div class="form-group">
+                            <label for="email">E-mail Institucional</label>
+                            <input type="email" id="email" placeholder="seu@email.com">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="institution">Instituição/Organização</label>
+                    <input type="text" id="institution" placeholder="Ex: UPE, PROEC">
+                </div>
+                
+                <div class="form-group">
+                    <label for="position">Cargo/Função</label>
+                    <input type="text" id="position" placeholder="Sua função na instituição">
+                </div>
+                
+                <div class="form-group">
+                    <label for="role">Tipo de Acesso Desejado</label>
+                    <select id="role">
+                        <option value="">Selecione um tipo de acesso</option>
+                        <option value="colaborator">Usuário Regular</option>
+                        <option value="admin">Administrador</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="justification">Justificativa para o Acesso</label>
+                    <textarea id="justification" placeholder="Explique por que você precisa de acesso ao sistema..."></textarea>
+                </div>
+                
+                <a href="solicitacao-acesso-realizada.html" class="btn btn-primary">Enviar Solicitação</a>
+                
+                <div class="access-footer">
+                    <p>Já tem uma conta? <a href="../login.html">Faça login aqui</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

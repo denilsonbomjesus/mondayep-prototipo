@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Demandas - Perfil do Usuário</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+            --danger-color: #e74c3c;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px 5px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+        }
+        
+        .btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+        
+        .user-profile {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .user-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--light-color);
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .user-email {
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+        
+        .user-actions {
+            margin-left: auto;
+            align-self: flex-start;
+        }
+        
+        .demandas-header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px 5px 0 0;
+            margin-bottom: 0;
+        }
+        
+        .demandas-list {
+            background-color: white;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .info-header {
+            display: grid;
+            grid-template-columns: 80px 1fr 120px 1fr 1fr 100px;
+            gap: 10px;
+            padding: 10px;
+            font-weight: bold;
+            background-color: var(--light-color);
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+        
+        .info-header-item {
+            padding: 5px;
+            text-align: center;
+        }
+        
+        .user-profile:hover {
+            background-color: #f0f7fc;
+        }
+        
+        .user-profile:last-child {
+            border-bottom: none;
+        }
+        
+        .info-item {
+            padding: 8px;
+            word-break: break-word;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 30px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lista de Usuários</h1>
+            <button class="btn btn-primary" onclick="goBack()">Voltar para Demandas</button>
+        </div>
+        
+        <div class="user-profile" onclick="window.location.href='usuario.html'">
+            <img src="https://via.placeholder.com/100" alt="Foto do usuário" class="user-avatar">
+            <div class="user-info">
+                <h2 class="user-name">Usuário 1</h2>
+                <p class="user-email">usuario1@upe.br</p>
+                <p>Cargo: Desenvolvedor Front-end</p>
+                <p>Setor: PROEC - TI</p>
+            </div>
+            <div class="user-actions">
+                <button class="btn btn-primary" onclick="event.stopPropagation(); editUser()">Editar Perfil</button>
+            </div>
+        </div>
+
+        <div class="user-profile" onclick="window.location.href='usuario.html'">
+            <img src="https://via.placeholder.com/100" alt="Foto do usuário" class="user-avatar">
+            <div class="user-info">
+                <h2 class="user-name">Usuário 2</h2>
+                <p class="user-email">usuario1@upe.br</p>
+                <p>Cargo: Desenvolvedor</p>
+                <p>Setor: DTIC</p>
+            </div>
+            <div class="user-actions">
+                <button class="btn btn-primary" onclick="event.stopPropagation(); editUser()">Editar Perfil</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para voltar à lista
+        function goBack() {
+            window.location.href = 'index-admin.html';
+        }
+        
+        // Função para editar usuário
+        function editUser() {
+            window.location.href = 'editar-usuario-lista.html';
+        }
+        
+        // Pode adicionar mais funcionalidades JavaScript conforme necessário
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pode carregar os dados do usuário via API aqui
+            // const userId = new URLSearchParams(window.location.search).get('id');
+            // fetchUserData(userId);
+        });
+    </script>
+</body>
+</html>

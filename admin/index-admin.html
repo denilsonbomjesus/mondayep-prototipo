@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Demandas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    
+    :root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --light-color: #ecf0f1;
+    --dark-color: #34495e;
+    --hover-color: #f0f7fc;
+    }
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+        background-color: #f5f5f5;
+        color: #333;
+        line-height: 1.6;
+    }
+    
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    .header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 5px 5px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    
+    .header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .btn {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+        background-color: var(--secondary-color);
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background-color: #2980b9;
+    }
+    
+    .btn-secondary {
+        background-color: var(--light-color);
+        color: var(--dark-color);
+    }
+    
+    .btn-secondary:hover {
+        background-color: #d5dbdb;
+    }
+    
+    /* Estilos para o ícone do usuário */
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-left: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border: 2px solid white;
+    }
+    
+    .user-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    
+    .header-actions {
+        display: flex;
+        align-items: center;
+    }
+    
+    .tabs {
+        display: flex;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 20px;
+    }
+    
+    .tab-btn {
+        padding: 10px 20px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+        color: #7f8c8d;
+        position: relative;
+    }
+    
+    .tab-btn.active {
+        color: var(--primary-color);
+    }
+    
+    .tab-btn.active::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: var(--secondary-color);
+    }
+    
+    .demands-table {
+        display: none;
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .demands-table.active-tab {
+        display: block;
+    }
+    
+    .table-header {
+        display: grid;
+        grid-template-columns: 80px 2fr 120px 2fr 2fr 100px;
+        padding: 15px;
+        background-color: var(--light-color);
+        border-radius: 5px 5px 0 0;
+        font-weight: bold;
+    }
+    
+    .header-item {
+        padding: 0 10px;
+    }
+    
+    /* Adicionar esta regra */
+    .header-item a {
+        color: inherit;
+        text-decoration: none;
+    }
+    
+    .table-body {
+        padding: 0 15px;
+    }
+    
+    .demand-row {
+        display: grid;
+        grid-template-columns: 80px 2fr 120px 2fr 2fr 100px;
+        padding: 15px 10px;
+        border-bottom: 1px solid #eee;
+        align-items: center;
+        transition: background-color 0.2s ease;
+    }
+    
+    .demand-row:hover {
+        background-color: var(--hover-color);
+        cursor: pointer;
+    }
+    
+    .demand-row:last-child {
+        border-bottom: none;
+    }
+    
+    .demand-id {
+        font-weight: 500;
+        color: var(--primary-color);
+    }
+    
+    .demand-title {
+        font-weight: 500;
+    }
+    
+    .demand-responsible {
+        color: var(--secondary-color);
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+    
+    .demand-responsible:hover {
+        color: #1a5276;
+        text-decoration: underline;
+    }
+    
+    .progress-container {
+        width: 100%;
+        background-color: #e0e0e0;
+        border-radius: 4px;
+        height: 20px;
+    }
+    
+    .progress-bar {
+        height: 100%;
+        border-radius: 4px;
+        background-color: var(--secondary-color);
+        text-align: center;
+        color: white;
+        font-size: 12px;
+        line-height: 20px;
+        transition: width 0.3s ease;
+    }
+        
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        overflow: auto;
+    }
+    
+    .modal-content {
+        background-color: white;
+        margin: 40px auto;
+        padding: 25px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 700px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        max-height: 85vh;
+        overflow-y: auto;
+    }
+    
+    @media (max-width: 768px) {
+        .modal-content {
+            width: 95%;
+            margin: 20px auto;
+            top: 0;
+            transform: none;
+            max-height: 90vh;
+        }
+    }
+    @keyframes modalopen {
+        from {
+            opacity: 0;
+            transform: translateY(-100%);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(-50%);
+        }
+    }
+    
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px; /* Adiciona espaçamento entre os elementos */
+    }
+    
+    /* Estilo para o novo botão de Usuários */
+    .btn-secondary {
+        background-color: var(--light-color);
+        color: var(--dark-color);
+        padding: 8px 15px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-secondary:hover {
+        background-color: #d5dbdb;
+    }
+
+    .btn-exit {
+        background-color: #e74c3c; /* vermelho suave */
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 50px; /* torna o botão bem arredondado */
+        cursor: pointer;
+        font-weight: 500;
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+    }
+
+    .btn-exit:hover {
+        background-color: #c0392b; /* vermelho mais escuro ao passar o mouse */
+    }
+    
+    /* Mantenha os estilos existentes para o user-avatar */
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        border: 2px solid white;
+    }
+    
+    .close-btn {
+        position: absolute;
+        right: 20px;
+        top: 15px;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    
+    .form-group textarea {
+        min-height: 60px;
+        resize: vertical;
+    }
+    
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 20px;
+    }
+    
+</style>
+<body>
+    <div class="container">
+        <!--<div class="header">-->
+        <!--    <h1>Gerenciador de Demandas</h1>-->
+        <!--    <button class="btn btn-primary" id="add-demand-btn">+ Nova Demanda</button>-->
+        <!--</div>-->
+        
+        <div class="header">
+            <h1>Gerenciador de Demandas</h1>
+            <div class="header-actions">
+                <button class="btn btn-primary" id="add-demand-btn">+ Nova Demanda</button>
+                <a href="lista-usuarios.html" class="btn btn-secondary">Usuários</a>
+                <a href="perfil.html" class="user-avatar" style="background-color: #e0e0e0;">
+                    <!-- <img src="assets/user-avatar.png" alt="Perfil do usuário"> -->
+                </a>
+                <a href="../login.html" class="btn btn-exit">Sair</a>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="active">Ativas</button>
+            <button class="tab-btn" data-tab="finished">Finalizadas</button>
+            <button class="tab-btn" data-tab="archived">Arquivadas</button>
+        </div>
+        
+        <div class="demands-container">
+            <div class="demands-table active-tab" id="active-demands">
+                <div class="table-header">
+                    <div class="header-item">ID</div>
+                    <div class="header-item">Demanda</div>
+                    <div class="header-item">Responsável</div>
+                    <!--<div class="header-item"><a href="#">Responsável</a></div>-->
+                    <div class="header-item">Descrição</div>
+                    <div class="header-item">O que falta?</div>
+                    <div class="header-item">Progresso</div>
+                </div>
+                <div class="table-body" id="active-demands-body">
+                    <!-- Demandas ativas serão inseridas aqui pelo JavaScript -->
+                </div>
+            </div>
+            
+            <div class="demands-table" id="finished-demands">
+                <div class="table-header">
+                    <div class="header-item">ID</div>
+                    <div class="header-item">Demanda</div>
+                    <div class="header-item">Responsável</div>
+                    <div class="header-item">Descrição</div>
+                    <div class="header-item">O que falta?</div>
+                    <div class="header-item">Progresso</div>
+                </div>
+                <div class="table-body" id="finished-demands-body">
+                    <!-- Demandas finalizadas serão inseridas aqui pelo JavaScript -->
+                </div>
+            </div>
+            
+            <div class="demands-table" id="archived-demands">
+                <div class="table-header">
+                    <div class="header-item">ID</div>
+                    <div class="header-item">Demanda</div>
+                    <div class="header-item">Responsável</div>
+                    <div class="header-item">Descrição</div>
+                    <div class="header-item">O que falta?</div>
+                    <div class="header-item">Progresso</div>
+                </div>
+                <div class="table-body" id="archived-demands-body">
+                    <!-- Demandas arquivadas serão inseridas aqui pelo JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para nova demanda -->
+    <div class="modal" id="new-demand-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Adicionar Nova Demanda</h2>
+            <form id="new-demand-form">
+                <div class="form-group">
+                    <label for="demand-id">ID</label>
+                    <input type="text" id="demand-id" value="07">
+                </div>
+                <div class="form-group">
+                    <label for="demand-title">Demanda</label>
+                    <input type="text" id="demand-title" value="Demanda Nova">
+                </div>
+                <div class="form-group">
+                    <label for="demand-responsible">Responsável</label>
+                    <select id="demand-responsible">
+                        <option value="">Selecione...</option>
+                        <option value="Usuario 1" selected>Usuario 1</option>
+                        <option value="Usuario 2">Usuario 2</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="demand-description">Descrição</label>
+                    <textarea id="demand-description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="demand-missing">O que falta?</label>
+                    <textarea id="demand-missing" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="demand-progress">Progresso</label>
+                    <input type="number" id="demand-progress" min="0" max="100" value="0">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancel-demand-btn">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Demanda</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Dados de exemplo baseados na imagem fornecida
+        const demandsData = {
+            active: [
+                {
+                    id: "EP-001",
+                    title: "Integração do Formulário de Atividade Diária no Site",
+                    responsible: "Usuario 1",
+                    description: "Implementar o formulário de atividade diária no site principal da UPE",
+                    missing: "Mudar o layout conforme feedback do cliente",
+                    progress: 67
+                },
+                {
+                    id: "EP-002",
+                    title: "Criação do Dashboard do EP",
+                    responsible: "Usuario 1",
+                    description: "Desenvolver dashboard para visualização de métricas do EP",
+                    missing: "Análise de viabilidade para conversão do código para Javascript",
+                    progress: 45
+                },
+                {
+                    id: "EP-003",
+                    title: "Automação de envio de certificados PROEC",
+                    responsible: "Usuario 2",
+                    description: "Sistema automático para envio de certificados por email",
+                    missing: "Consertar erros de mensagem, testar cenários",
+                    progress: 80
+                }
+            ],
+            finished: [
+                {
+                    id: "EP-004",
+                    title: "Planilha de Frequência",
+                    responsible: "Usuario 2",
+                    description: "Sistema de registro de frequência de equipe",
+                    missing: "Verificar com a equipe",
+                    progress: 100
+                }
+            ],
+            archived: [
+                {
+                    id: "EP-005",
+                    title: "WIKI do EP",
+                    responsible: "Usuario 1",
+                    description: "Documentação técnica do sistema",
+                    missing: "Automatizar criação de botões",
+                    progress: 100
+                }
+            ]
+        };
+        
+        // Função para renderizar as demandas
+        function renderDemands() {
+            renderDemandsByStatus('active');
+            renderDemandsByStatus('finished');
+            renderDemandsByStatus('archived');
+        }
+        
+        // function renderDemandsByStatus(status) {
+        //     const containerId = `${status}-demands-body`;
+        //     const container = document.getElementById(containerId);
+        //     container.innerHTML = '';
+            
+        //     demandsData[status].forEach(demand => {
+        //         const row = document.createElement('div');
+        //         row.className = 'demand-row';
+                
+        //         // Criar link para a página da demanda
+        //         row.onclick = function() {
+        //             window.location.href = `demanda.html?id=${demand.id}`;
+        //         };
+                
+        //         row.innerHTML = `
+        //             <div class="demand-id">${demand.id}</div>
+        //             <div class="demand-title">${demand.title}</div>
+        //             <div class="demand-responsible" onclick="event.stopPropagation(); window.location.href='usuario.html?nome=${demand.responsible}'">${demand.responsible}</div>
+        //             <div class="demand-description">${demand.description}</div>
+        //             <div class="demand-missing">${demand.missing}</div>
+        //             <div class="progress-container">
+        //                 <div class="progress-bar" style="width: ${demand.progress}%">${demand.progress}%</div>
+        //             </div>
+        //         `;
+                
+        //         container.appendChild(row);
+        //     });
+        // }
+        
+        function renderDemandsByStatus(status) {
+            const containerId = `${status}-demands-body`;
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+            
+            demandsData[status].forEach(demand => {
+                const row = document.createElement('div');
+                row.className = 'demand-row';
+                
+                // Criar link para a página genérica da demanda
+                row.onclick = function() {
+                    window.location.href = 'demanda-generica.html';
+                    // Ou com parâmetro: window.location.href = `demanda-generica.html?id=${demand.id}`;
+                };
+                
+                row.innerHTML = `
+                    <div class="demand-id">${demand.id}</div>
+                    <div class="demand-title">${demand.title}</div>
+                    <div class="demand-responsible" onclick="event.stopPropagation(); window.location.href='usuario.html?nome=${demand.responsible}'">${demand.responsible}</div>
+                    <div class="demand-description">${demand.description}</div>
+                    <div class="demand-missing">${demand.missing}</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: ${demand.progress}%">${demand.progress}%</div>
+                    </div>
+                `;
+                
+                container.appendChild(row);
+            });
+        }
+
+        // Função para adicionar nova demanda
+        function setupNewDemandModal() {
+            const modal = document.getElementById('new-demand-modal');
+            const btn = document.getElementById('add-demand-btn');
+            const cancelBtn = document.getElementById('cancel-demand-btn');
+            const form = document.getElementById('new-demand-form');
+            
+            btn.onclick = function() {
+                modal.style.display = 'block';
+            }
+            
+            cancelBtn.onclick = function() {
+                modal.style.display = 'none';
+            }
+            
+            document.querySelector('.close-btn').onclick = function() {
+                modal.style.display = 'none';
+            }
+            
+            window.onclick = function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            }
+            
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                
+                const id = document.getElementById('demand-id').value;
+                const title = document.getElementById('demand-title').value;
+                const responsible = document.getElementById('demand-responsible').value;
+                const description = document.getElementById('demand-description').value || '';
+                const missing = document.getElementById('demand-missing').value || '';
+                const progress = document.getElementById('demand-progress').value || 0;
+                
+                const newDemand = {
+                    id,
+                    title,
+                    responsible,
+                    description,
+                    missing,
+                    progress: parseInt(progress)
+                };
+                
+                demandsData.active.push(newDemand);
+                renderDemands();
+                
+                // Resetar o formulário
+                form.reset();
+                modal.style.display = 'none';
+            };
+        }
+        
+        // Função para alternar entre as abas
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.tab-btn');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remover classe active de todas as tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // Adicionar classe active à tab clicada
+                    tab.classList.add('active');
+                    
+                    // Esconder todas as tabelas
+                    document.querySelectorAll('.demands-table').forEach(table => {
+                        table.classList.remove('active-tab');
+                    });
+                    
+                    // Mostrar a tabela correspondente
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-demands`).classList.add('active-tab');
+                });
+            });
+        }
+        
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            renderDemands();
+            setupNewDemandModal();
+            setupTabs();
+        });
+    </script>
+</body>
+</html>
