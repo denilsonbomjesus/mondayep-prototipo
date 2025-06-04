@@ -165,11 +165,21 @@
             text-align: center;
         }
         
-        .user-profile:hover {
+        .info-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 120px 1fr 1fr 100px;
+            gap: 10px;
+            padding: 10px;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        
+        .info-row:hover {
             background-color: #f0f7fc;
         }
         
-        .user-profile:last-child {
+        .info-row:last-child {
             border-bottom: none;
         }
         
@@ -181,10 +191,31 @@
             align-items: center;
         }
         
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            border-radius: 4px;
+            background-color: var(--secondary-color);
+            text-align: center;
+            color: white;
+            font-size: 12px;
+            line-height: 20px;
+        }
+        
         .empty-state {
             text-align: center;
             padding: 30px;
             color: #7f8c8d;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px; /* Espaço entre os botões */
         }
     </style>
 </head>
@@ -197,11 +228,11 @@
                         <path d="M19 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H19v-2z"/>
                     </svg>
                 </button>
-                <h1>Lista de Usuários</h1>
+                <h1>Perfil do Usuário</h1>
             </div>
         </div>
         
-        <div class="user-profile" onclick="window.location.href='usuario-lista.html'">
+        <div class="user-profile">
             <img src="perfil.png" alt="Foto do usuário" class="user-avatar">
             <div class="user-info">
                 <h2 class="user-name">Usuário 1</h2>
@@ -210,20 +241,76 @@
                 <p>Setor: PROEC - TI</p>
             </div>
             <div class="user-actions">
-                <button class="btn btn-primary" onclick="event.stopPropagation(); editUser()">Editar Perfil</button>
+                <button class="btn btn-primary" onclick="editUser()">Editar Perfil</button>
             </div>
         </div>
-
-        <div class="user-profile" onclick="window.location.href='usuario-lista.html'">
-            <img src="perfil.png" alt="Foto do usuário" class="user-avatar">
-            <div class="user-info">
-                <h2 class="user-name">Usuário 2</h2>
-                <p class="user-email">usuario1@upe.br</p>
-                <p>Cargo: Desenvolvedor</p>
-                <p>Setor: DTIC</p>
+        
+        <h2 class="demandas-header">Demandas Associadas</h2>
+        
+        <div class="demandas-list">
+            <div class="info-header">
+                <div class="info-header-item">ID</div>
+                <div class="info-header-item">Demanda</div>
+                <div class="info-header-item">Responsável</div>
+                <div class="info-header-item">Descrição</div>
+                <div class="info-header-item">O que falta?</div>
+                <div class="info-header-item">Progresso</div>
             </div>
-            <div class="user-actions">
-                <button class="btn btn-primary" onclick="event.stopPropagation(); editUser()">Editar Perfil</button>
+            
+            <!-- Demanda 1 -->
+            <div class="info-row" onclick="window.location.href='demanda-generica-usuario-lista.html'">
+                <div class="info-item">EP-001</div>
+                <div class="info-item">Demanda 01</div>
+                <div class="info-item">Usuário 1</div>
+                <div class="info-item">Descrição da Demanda 01</div>
+                <div class="info-item">O que Falta da Demanda 01</div>
+                <div class="info-item">
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 65%;">65%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Demanda 2 -->
+            <div class="info-row" onclick="window.location.href='demanda-generica-usuario-lista.html'">
+                <div class="info-item">EP-002</div>
+                <div class="info-item">Demanda 02</div>
+                <div class="info-item">Usuário 1</div>
+                <div class="info-item">Descrição da Demanda 02</div>
+                <div class="info-item">O que Falta da Demanda 02</div>
+                <div class="info-item">
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 30%;">30%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Demanda 3 -->
+            <div class="info-row" onclick="window.location.href='demanda-generica-usuario-lista.html'">
+                <div class="info-item">EP-003</div>
+                <div class="info-item">Demanda 03</div>
+                <div class="info-item">Usuário 1</div>
+                <div class="info-item">Descrição da Demanda 03</div>
+                <div class="info-item">O que Falta da Demanda 03</div>
+                <div class="info-item">
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 80%;">80%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Demanda 4 -->
+            <div class="info-row" onclick="window.location.href='demanda-generica-usuario-lista.html'">
+                <div class="info-item">EP-004</div>
+                <div class="info-item">Demanda 04</div>
+                <div class="info-item">Usuário 1</div>
+                <div class="info-item">Descrição da Demanda 04</div>
+                <div class="info-item">O que Falta da Demanda 04</div>
+                <div class="info-item">
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 45%;">45%</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -231,12 +318,16 @@
     <script>
         // Função para voltar à lista
         function goBack() {
-            window.location.href = 'index-admin.html';
+            window.location.href = 'lista-usuarios.html';
+        }
+
+        function goBackUsuarios() {
+            window.location.href = 'lista-usuarios.html';
         }
         
         // Função para editar usuário
         function editUser() {
-            window.location.href = 'editar-lista-usuarios.html';
+            window.location.href = 'editar-usuario-lista.html';
         }
         
         // Pode adicionar mais funcionalidades JavaScript conforme necessário
